@@ -15,6 +15,8 @@
  */
 package com.nesscomputing.sequencer;
 
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -157,5 +159,26 @@ public class HashSequencer<K> extends AbstractSequencer<K> {
     @Override
     public int size() {
         return nextInt;
+    }
+
+    private Object writeReplace() throws ObjectStreamException
+    {
+        return new SerProxy<>(intToKey);
+    }
+
+    private static class SerProxy<K> implements Serializable
+    {
+        private static final long serialVersionUID = 1L;
+        private final List<K> intToKey;
+
+        SerProxy(List<K> intToKey)
+        {
+            this.intToKey = intToKey;
+        }
+
+        private Object readResolve() throws ObjectStreamException
+        {
+            return copyOf(intToKey);
+        }
     }
 }

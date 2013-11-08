@@ -15,6 +15,8 @@
  */
 package com.nesscomputing.sequencer;
 
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.List;
 
@@ -155,6 +157,27 @@ class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
         public int size()
         {
             return ImmutableSequencerImpl.this.size();
+        }
+    }
+
+    private Object writeReplace() throws ObjectStreamException
+    {
+        return new SerProxy<>(reverse);
+    }
+
+    private static class SerProxy<K> implements Serializable
+    {
+        private static final long serialVersionUID = 1L;
+        private final K[] arr;
+
+        SerProxy(K[] arr)
+        {
+            this.arr = arr;
+        }
+
+        private Object readResolve() throws ObjectStreamException
+        {
+            return ImmutableSequencer.of(arr);
         }
     }
 }
