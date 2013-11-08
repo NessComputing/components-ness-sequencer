@@ -15,16 +15,19 @@
  */
 package com.nesscomputing.sequencer;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.UnmodifiableIterator;
 
-class SequencerEntrySet<K> extends AbstractSet<Entry<K, Integer>>
+class SequencerEntrySet<K> extends AbstractSet<Entry<K, Integer>> implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     private final Sequencer<K> sequencer;
 
     public SequencerEntrySet(Sequencer<K> sequencer)

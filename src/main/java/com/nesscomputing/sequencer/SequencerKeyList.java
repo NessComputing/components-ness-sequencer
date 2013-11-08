@@ -15,10 +15,13 @@
  */
 package com.nesscomputing.sequencer;
 
+import java.io.Serializable;
 import java.util.AbstractList;
 
-class SequencerKeyList<K> extends AbstractList<K>
+class SequencerKeyList<K> extends AbstractList<K> implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     private final Sequencer<K> sequencer;
 
     public SequencerKeyList(Sequencer<K> sequencer)
