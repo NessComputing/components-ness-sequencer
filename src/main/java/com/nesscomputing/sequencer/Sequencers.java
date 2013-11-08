@@ -15,10 +15,18 @@
  */
 package com.nesscomputing.sequencer;
 
+/**
+ * Utility methods that work with {@link Sequencer}s.
+ */
 public class Sequencers
 {
     private Sequencers() { }
 
+    /**
+     * Decorate the given Sequencer with a wrapper that rejects writes.
+     * The returned Sequencer may still change if the original referant
+     * is modified.
+     */
     public static <T> Sequencer<T> unmodifiableSequencer(Sequencer<T> seq)
     {
         if (seq instanceof UnmodifiableSequencer || seq instanceof ImmutableSequencer) {
@@ -44,6 +52,10 @@ public class Sequencers
     }
 
     private static final ImmutableSequencer<Object> EMPTY_SEQUENCER = ImmutableSequencer.copyOf(new HashSequencer<>());
+
+    /**
+     * Return a Sequencer which is empty and may never change.
+     */
     @SuppressWarnings("unchecked")
     public static <T> ImmutableSequencer<T> emptySequencer()
     {

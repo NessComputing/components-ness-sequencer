@@ -20,28 +20,33 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gnu.trove.map.TObjectIntMap;
 
-
+/**
+ * A Sequencer represents a bidirectional mapping from sparse {@code <K>} to dense integers.
+ */
 @JsonDeserialize(as=ImmutableSequencerImpl.class)
 public interface Sequencer<K> extends Serializable
 {
-
-    /** Convert the given sparse key to its dense representation, and defines
+    /**
+     * Convert the given sparse key to its dense representation, and defines
      * a mapping for it if the sparse key is unknown.
      *
      * @param key sparse key
      * @return dense key
      */
-    int sequenceOrAdd(K key);
+    int sequenceOrAdd(@Nonnull K key);
 
-    /** Indicates if the given key can be sequenced
+    /**
+     * Indicates if the given key can be sequenced.
      *
      * @param key
-     * @return
+     * @return true iff the key is in the sequencer
      */
     boolean containsKey(Object key);
 
@@ -52,7 +57,7 @@ public interface Sequencer<K> extends Serializable
      * @return dense key
      * @throws SequencerKeyException if there is no mapping for this key.
      */
-    int sequence(K key) throws SequencerKeyException;
+    int sequence(@Nonnull K key) throws SequencerKeyException;
 
     /**
      * Convert the given sparse key to its dense representation.
@@ -61,7 +66,7 @@ public interface Sequencer<K> extends Serializable
      * @param key sparse key
      * @return dense key
      */
-    int sequenceIfExists(K key);
+    int sequenceIfExists(@Nonnull K key);
 
     /**
      * Sequence many elements.  Instead of throwing an exception, missing elements
@@ -69,7 +74,8 @@ public interface Sequencer<K> extends Serializable
      * @param keys the keys to sequence
      * @return all keys' sequences that exist
      */
-    TObjectIntMap<K> sequenceExisting(Iterable<K> keys);
+    @Nonnull
+    TObjectIntMap<K> sequenceExisting(@Nonnull Iterable<K> keys);
 
     /**
      * Sequence many elements into a preallocated result.  Instead of throwing an exception, missing elements
@@ -77,26 +83,32 @@ public interface Sequencer<K> extends Serializable
      * @param keys the keys to sequence
      * @return all keys' sequences that exist
      */
-    void sequenceExisting(Iterable<K> keys, TObjectIntMap<K> result);
+    void sequenceExisting(@Nonnull Iterable<K> keys, @Nonnull TObjectIntMap<K> result);
 
-    /** Convert the given dense key back to its sparse key representation.
+    /**
+     * Convert the given dense key back to its sparse key representation.
      *
      * @param index dense key
      * @return sparse key, or null if not known
      */
+    @Nonnull
     K unsequence(int index);
 
-    /** @return The number of sequenced items. */
+    /**
+     * @return The number of sequenced items.
+     */
     int size();
 
     /**
      * @return the list of known keys, in sequence order.
      */
     @JsonValue
+    @Nonnull
     List<K> getKeys();
 
     /**
      * @return the set of known entries, in sequence order.
      */
+    @Nonnull
     Set<Entry<K, Integer>> entrySet();
 }

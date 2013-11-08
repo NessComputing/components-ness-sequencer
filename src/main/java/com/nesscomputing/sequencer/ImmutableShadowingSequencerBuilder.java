@@ -27,6 +27,12 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 
 import com.nesscomputing.logging.Log;
 
+/**
+ * Sometimes you want to build immutable sequences bit by bit.
+ * An immutable sequencer may be extended via this builder and
+ * then constructed into a new immutable sequencer which shares
+ * the original state.
+ */
 public class ImmutableShadowingSequencerBuilder<K> extends AbstractSequencer<K>
 {
     private static final Log LOG = Log.findLog();
@@ -71,6 +77,11 @@ public class ImmutableShadowingSequencerBuilder<K> extends AbstractSequencer<K>
         additionalStartingSize = additional.size();
     }
 
+    /**
+     * Create a new ImmutableSequencer with a reference
+     * to the original sequence and the contents of
+     * this builder.
+     */
     public ImmutableSequencer<K> build()
     {
         if (additional.size() == additionalStartingSize) {
@@ -84,6 +95,11 @@ public class ImmutableShadowingSequencerBuilder<K> extends AbstractSequencer<K>
         return new ImmutableShadowingSequencer<K>(base, ImmutableSequencer.copyOf(additional));
     }
 
+    /**
+     * Create a new ImmutableSequencer that does not
+     * reference the immutable sequencer, but has the contents
+     * of both it and the extension.
+     */
     public ImmutableSequencer<K> buildAndCompact()
     {
         return new ImmutableSequencerImpl<K>(build());

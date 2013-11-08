@@ -19,7 +19,6 @@ import java.util.AbstractList;
 
 class SequencerKeyList<K> extends AbstractList<K>
 {
-
     private final Sequencer<K> sequencer;
 
     public SequencerKeyList(Sequencer<K> sequencer)

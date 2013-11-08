@@ -15,20 +15,23 @@
  */
 package com.nesscomputing.sequencer;
 
-
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import gnu.trove.map.TObjectIntMap;
 
+/**
+ * Sequencer implementation that does nothing but forward invocations
+ * to a delegate.
+ */
 class DelegatingSequencer<T> implements Sequencer<T>
 {
     private static final long serialVersionUID = 1L;
 
     private final Sequencer<T> delegate;
 
-    DelegatingSequencer(Sequencer<T> delegate)
+    protected DelegatingSequencer(Sequencer<T> delegate)
     {
         this.delegate = delegate;
     }

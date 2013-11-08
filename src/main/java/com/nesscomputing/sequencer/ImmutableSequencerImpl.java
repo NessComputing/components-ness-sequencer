@@ -19,12 +19,20 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
+/**
+ * A Sequencer that is initialized upon construction and may never
+ * change afterward.
+ */
+@Immutable
 class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
 {
     private static final long serialVersionUID = 1L;
@@ -76,9 +84,10 @@ class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
         }
     }
 
-    public static <K> ImmutableSequencerImpl<K> copyOf(Sequencer<K> seq)
+    @Nonnull
+    public static <K> ImmutableSequencerImpl<K> copyOf(@Nonnull Sequencer<K> seq)
     {
-        if (seq instanceof ImmutableSequencerImpl){
+        if (seq instanceof ImmutableSequencerImpl) {
             return (ImmutableSequencerImpl<K>) seq;
         }
         return new ImmutableSequencerImpl<>(seq);

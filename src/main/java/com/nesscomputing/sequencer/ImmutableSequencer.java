@@ -15,28 +15,33 @@
  */
 package com.nesscomputing.sequencer;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+@Immutable
 @JsonDeserialize(as=ImmutableSequencerImpl.class)
 public abstract class ImmutableSequencer<K> extends AbstractSequencer<K>
 {
     private static final long serialVersionUID = 1L;
 
-    public static <K> ImmutableSequencer<K> copyOf(Sequencer<K> seq)
+    @Nonnull
+    public static <K> ImmutableSequencer<K> copyOf(@Nonnull Sequencer<K> seq)
     {
-        if (seq instanceof ImmutableSequencer){
+        if (seq instanceof ImmutableSequencer) {
             return (ImmutableSequencer<K>) seq;
         }
         return new ImmutableSequencerImpl<>(seq);
     }
 
     @Override
-    public final int sequenceOrAdd(K key)
+    public final int sequenceOrAdd(@Nonnull K key)
     {
         throw new UnsupportedOperationException("Immutable sequencers may not be modified");
     }
 
-
+    @Nonnull
     public ImmutableShadowingSequencerBuilder<K> extendImmutableSequence()
     {
         return new ImmutableShadowingSequencerBuilder<K>(this);

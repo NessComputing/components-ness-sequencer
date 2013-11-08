@@ -18,19 +18,19 @@ package com.nesscomputing.sequencer;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.concurrent.NotThreadSafe;
+
 import com.google.common.collect.Lists;
 
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
-/** Maps a sparse range of keys to a dense range (starting at 0).
- *
- * Not thread safe, but it is only written to while retraining. It is then passed (as part of the
- * larger LocalRecommender) to the other threads in a recommender instance by way of an
- * AtomicReference.
+/**
+ * Maps a sparse range of keys to a dense range (starting at 0).
  *
  * @param <K> the type of sparse keys to map
  */
+@NotThreadSafe
 public class HashSequencer<K> extends AbstractSequencer<K> {
     private static final long serialVersionUID = 1L;
 

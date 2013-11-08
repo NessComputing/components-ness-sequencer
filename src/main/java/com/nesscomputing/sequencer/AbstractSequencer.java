@@ -23,7 +23,9 @@ import java.util.Set;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
-
+/**
+ * Base class for Sequencer implementations.  Takes care of a bit of the drudgery.
+ */
 abstract class AbstractSequencer<K> implements Sequencer<K>
 {
     private static final long serialVersionUID = 1L;
