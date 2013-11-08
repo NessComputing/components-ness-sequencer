@@ -51,7 +51,7 @@ public class Sequencers
         }
     }
 
-    private static final ImmutableSequencer<Object> EMPTY_SEQUENCER = ImmutableSequencer.copyOf(new HashSequencer<>());
+    private static final ImmutableSequencer<Object> EMPTY_SEQUENCER = ImmutableSequencer.copyOf(HashSequencer.create());
 
     /**
      * Return a Sequencer which is empty and may never change.

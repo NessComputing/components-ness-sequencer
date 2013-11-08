@@ -41,7 +41,7 @@ public class ImmutableShadowingSequencerBuilder<K> extends AbstractSequencer<K>
 
     private final ImmutableSequencer<K> originalBase;
     private final ImmutableSequencer<K> base;
-    private final Sequencer<K> additional = new HashSequencer<K>();
+    private final Sequencer<K> additional = HashSequencer.create();
 
     private final int additionalStartingSize;
 

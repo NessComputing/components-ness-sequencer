@@ -20,7 +20,7 @@ public class HashSequencerTest extends AbstractSequencerTest<HashSequencer<Strin
     @Override
     protected HashSequencer<String> createEmpty()
     {
-        return new HashSequencer<>();
+        return HashSequencer.create();
     }
 
     @Override

@@ -15,11 +15,14 @@
  */
 package com.nesscomputing.sequencer;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import gnu.trove.map.TObjectIntMap;
@@ -52,17 +55,56 @@ public class HashSequencer<K> extends AbstractSequencer<K> {
         keyToInt = new TObjectIntHashMap<K>(size, LOAD_FACTOR, -1);
         intToKey = Lists.newArrayListWithCapacity(size);
 
-        this.nextInt = other.size();
-        for (int i = 0; i < this.nextInt; i++) {
-            K key = other.unsequence(i);
+        int i = 0;
+        Iterator<K> iter = elements.iterator();
+        while (iter.hasNext()) {
+            K key = iter.next();
             this.intToKey.add(key);
-            this.keyToInt.put(key, i);
+            this.keyToInt.put(key, i++);
         }
+
+        this.nextInt = intToKey.size();
     }
 
+    /**
+     * Create a new HashSequencer with a default initial size.
+     */
+    public static <K> HashSequencer<K> create()
+    {
+        return createWithInitialCapacity(10);
+    }
+
+    /**
+     * Create a new HashSequencer with a specified initial size.
+     */
+    public static <K> HashSequencer<K> createWithInitialCapacity(int startingSize)
+    {
+        return new HashSequencer<>(startingSize);
+    }
+
+    /**
+     * Create a new HashSequencer with the elements of another sequencer.
+     */
     public static <K> HashSequencer<K> copyOf(Sequencer<K> other)
     {
         return new HashSequencer<K>(other);
+    }
+
+    /**
+     * Create a new HashSequencer with the elements of an array.
+     */
+    @SafeVarargs
+    public static <K> HashSequencer<K> copyOf(K... elements)
+    {
+        return new HashSequencer<>(elements.length, Arrays.asList(elements));
+    }
+
+    /**
+     * Create a new HashSequencer with the elements of an array.
+     */
+    public static <K> HashSequencer<K> copyOf(Iterable<K> elements)
+    {
+        return new HashSequencer<>(Iterables.size(elements), elements);
     }
 
     @Override

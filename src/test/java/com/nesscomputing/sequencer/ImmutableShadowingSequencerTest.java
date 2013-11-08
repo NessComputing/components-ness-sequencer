@@ -28,14 +28,6 @@ import com.google.common.collect.ImmutableSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.nesscomputing.sequencer.HashSequencer;
-import com.nesscomputing.sequencer.ImmutableSequencer;
-import com.nesscomputing.sequencer.ImmutableShadowingSequencer;
-import com.nesscomputing.sequencer.ImmutableShadowingSequencerBuilder;
-import com.nesscomputing.sequencer.Sequencer;
-import com.nesscomputing.sequencer.Sequencers;
-
-
 import gnu.trove.map.TObjectIntMap;
 
 public class ImmutableShadowingSequencerTest
@@ -45,7 +37,7 @@ public class ImmutableShadowingSequencerTest
     @Before
     public void setUp()
     {
-        Sequencer<String> seq = new HashSequencer<>();
+        Sequencer<String> seq = HashSequencer.create();
 
         seedSeq(seq);
 

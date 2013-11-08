@@ -37,7 +37,7 @@ public class SequencerJsonSerializationTest
     @Test
     public void testHashSequencerSerialize1() throws Exception
     {
-        HashSequencer<String> origSeq = new HashSequencer<>();
+        HashSequencer<String> origSeq = HashSequencer.create();
 
         origSeq.sequenceOrAdd("a");
         origSeq.sequenceOrAdd("b");
