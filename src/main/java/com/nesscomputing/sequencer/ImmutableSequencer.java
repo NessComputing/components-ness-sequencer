@@ -15,6 +15,8 @@
  */
 package com.nesscomputing.sequencer;
 
+import java.util.Arrays;
+
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
@@ -25,6 +27,18 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public abstract class ImmutableSequencer<K> extends AbstractSequencer<K>
 {
     private static final long serialVersionUID = 1L;
+
+    @SafeVarargs
+    public static <K> ImmutableSequencer<K> of(K... elements)
+    {
+        return of(Arrays.asList(elements));
+    }
+
+    @Nonnull
+    public static <K> ImmutableSequencer<K> of(@Nonnull Iterable<K> iter)
+    {
+        return new ImmutableSequencerImpl<>(iter);
+    }
 
     @Nonnull
     public static <K> ImmutableSequencer<K> copyOf(@Nonnull Sequencer<K> seq)

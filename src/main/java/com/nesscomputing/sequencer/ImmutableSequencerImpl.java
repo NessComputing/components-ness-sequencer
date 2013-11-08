@@ -23,6 +23,7 @@ import javax.annotation.concurrent.Immutable;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Iterables;
 
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
@@ -56,9 +57,9 @@ class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
 
     @SuppressWarnings("unchecked")
     @JsonCreator
-    ImmutableSequencerImpl(List<K> elements)
+    ImmutableSequencerImpl(Iterable<K> elements)
     {
-        final int size = elements.size();
+        final int size = Iterables.size(elements);
         forward = new TObjectIntHashMap<>(size, LOAD_FACTOR, -1);
         reverse = (K[]) new Object[size];
         int v = 0;
