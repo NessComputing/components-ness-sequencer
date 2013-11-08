@@ -14,8 +14,6 @@ import gnu.trove.map.TObjectIntMap;
 @JsonDeserialize(as=ImmutableSequencerImpl.class)
 public interface Sequencer<K> extends Serializable
 {
-    @JsonValue
-    List<K> getKeys();
 
     /** Convert the given sparse key to its dense representation, and defines
      * a mapping for it if the sparse key is unknown.
@@ -76,5 +74,14 @@ public interface Sequencer<K> extends Serializable
     /** @return The number of sequenced items. */
     int size();
 
+    /**
+     * @return the list of known keys, in sequence order.
+     */
+    @JsonValue
+    List<K> getKeys();
+
+    /**
+     * @return the set of known entries, in sequence order.
+     */
     Set<Entry<K, Integer>> entrySet();
 }
