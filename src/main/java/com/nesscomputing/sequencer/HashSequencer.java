@@ -33,19 +33,24 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 @NotThreadSafe
 public class HashSequencer<K> extends AbstractSequencer<K> {
     private static final long serialVersionUID = 1L;
+    private static final float LOAD_FACTOR = 0.5f;
 
     private final TObjectIntHashMap<K> keyToInt;
     private final List<K> intToKey;
     private int nextInt = 0;
 
-    public HashSequencer() {
-        keyToInt = new TObjectIntHashMap<K>();
-        intToKey = Lists.newArrayList();
+    private HashSequencer(int startingSize) {
+        keyToInt = new TObjectIntHashMap<K>(startingSize, LOAD_FACTOR, -1);
+        intToKey = Lists.newArrayListWithCapacity(startingSize);
     }
 
     private HashSequencer(Sequencer<K> other) {
-        keyToInt = new TObjectIntHashMap<K>(other.size());
-        intToKey = Lists.newArrayListWithCapacity(other.size());
+        this(other.size(), other.getKeys());
+    }
+
+    private HashSequencer(int size, Iterable<K> elements) {
+        keyToInt = new TObjectIntHashMap<K>(size, LOAD_FACTOR, -1);
+        intToKey = Lists.newArrayListWithCapacity(size);
 
         this.nextInt = other.size();
         for (int i = 0; i < this.nextInt; i++) {
@@ -67,8 +72,10 @@ public class HashSequencer<K> extends AbstractSequencer<K> {
 
     @Override
     public int sequenceOrAdd(K key) {
+        assert keyToInt.getNoEntryValue() == -1 : "noEntryValue must be == -1";
+
         int result = keyToInt.get(key);
-        if (result == keyToInt.getNoEntryValue() && !keyToInt.containsKey(key)) {
+        if (result == keyToInt.getNoEntryValue()) {
             keyToInt.put(key, result = nextInt);
             intToKey.add(key);
             nextInt++;
@@ -84,20 +91,17 @@ public class HashSequencer<K> extends AbstractSequencer<K> {
 
     @Override
     public int sequenceIfExists(K key) {
-        int val = keyToInt.get(key);
-
-        if (val == keyToInt.getNoEntryValue() && !keyToInt.containsKey(key))
-            return -1;
-
-        return val;
+        assert keyToInt.getNoEntryValue() == -1 : "noEntryValue must be == -1";
+        return keyToInt.get(key);
     }
 
     @Override
     public void sequenceExisting(Iterable<K> keys, TObjectIntMap<K> result)
     {
+        assert keyToInt.getNoEntryValue() == -1 : "noEntryValue must be == -1";
         for (K key : keys) {
             int val = keyToInt.get(key);
-            if (val != keyToInt.getNoEntryValue() || keyToInt.containsKey(key)) {
+            if (val != keyToInt.getNoEntryValue()) {
                 result.put(key, val);
             }
         }
