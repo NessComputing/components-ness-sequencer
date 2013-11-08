@@ -23,6 +23,10 @@
   <packaging>jar</packaging>
   <description>Ness Sequencers</description>
 
+  <properties>
+    <dep.jackson>2.2.3</dep.jackson>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.nesscomputing.components</groupId>
@@ -31,12 +35,34 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.trove4j</groupId>
+      <artifactId>trove4j</artifactId>
+      <version>3.0.3</version>
+    </dependency>
+
+    <!-- Used only for annotations and tests.  Be careful to not use for anything else, as these are optional! -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${dep.jackson}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${dep.jackson}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${dep.jackson}</version>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
