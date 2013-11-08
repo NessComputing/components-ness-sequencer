@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.junit.Test;
 
 import gnu.trove.map.TObjectIntMap;
@@ -84,6 +85,14 @@ public abstract class AbstractSequencerTest<S extends Sequencer<String>>
     }
 
     @Test
+    public void testEmptySerialization()
+    {
+        final S seq = createEmpty();
+        byte[] bytes = SerializationUtils.serialize(seq);
+        assertEquals(seq, SerializationUtils.deserialize(bytes));
+    }
+
+    @Test
     public void testFullSequencerSize()
     {
         S seq = extend(createEmpty(), "aaa");
@@ -144,5 +153,13 @@ public abstract class AbstractSequencerTest<S extends Sequencer<String>>
     {
         S seq = extend(createEmpty(), "aaa", "bbb", "ddd");
         assertEquals(ImmutableList.of("aaa", "bbb", "ddd"), seq.getKeys());
+    }
+
+    @Test
+    public void testFullSerialization()
+    {
+        final S seq = extend(createEmpty(), "aaa", "bbb", "ccc", "ddd");
+        byte[] bytes = SerializationUtils.serialize(seq);
+        assertEquals(seq, SerializationUtils.deserialize(bytes));
     }
 }
