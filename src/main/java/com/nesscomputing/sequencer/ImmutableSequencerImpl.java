@@ -16,7 +16,6 @@
 package com.nesscomputing.sequencer;
 
 import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -36,6 +35,7 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
 {
     private static final long serialVersionUID = 1L;
+    private static final float LOAD_FACTOR = 0.5f;
 
     private final TObjectIntMap<K> forward;
 
@@ -50,16 +50,16 @@ class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
     @SuppressWarnings("unchecked")
     ImmutableSequencerImpl()
     {
-        forward = new TObjectIntHashMap<>(0);
+        forward = new TObjectIntHashMap<>(0, LOAD_FACTOR, -1);
         reverse = (K[]) new Object[0];
     }
 
     @SuppressWarnings("unchecked")
     @JsonCreator
-    ImmutableSequencerImpl(ArrayList<K> elements)
+    ImmutableSequencerImpl(List<K> elements)
     {
         final int size = elements.size();
-        forward = new TObjectIntHashMap<>(size);
+        forward = new TObjectIntHashMap<>(size, LOAD_FACTOR, -1);
         reverse = (K[]) new Object[size];
         int v = 0;
         for (K k : elements) {
@@ -73,7 +73,7 @@ class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
     ImmutableSequencerImpl(Sequencer<K> sequencer)
     {
         final int size = sequencer.size();
-        forward = new TObjectIntHashMap<>(size);
+        forward = new TObjectIntHashMap<>(size, LOAD_FACTOR, -1);
         reverse = (K[]) new Object[size];
 
         for (int v = 0; v < size; v++) {
@@ -114,19 +114,17 @@ class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
     @Override
     public int sequenceIfExists(K key)
     {
-        final int result = forward.get(key);
-        if (result == forward.getNoEntryValue() && !containsKey(key)) {
-            return -1;
-        }
-        return result;
+        assert forward.getNoEntryValue() == -1 : "noEntryValue must be == -1";
+        return forward.get(key);
     }
 
     @Override
     public void sequenceExisting(Iterable<K> keys, TObjectIntMap<K> result)
     {
+        assert forward.getNoEntryValue() == -1 : "noEntryValue must be == -1";
         for (K key : keys) {
             int val = forward.get(key);
-            if (val != forward.getNoEntryValue() || forward.containsKey(key)) {
+            if (val != forward.getNoEntryValue()) {
                 result.put(key, val);
             }
         }
