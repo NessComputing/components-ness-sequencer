@@ -17,8 +17,6 @@ package com.nesscomputing.sequencer;
 
 import java.io.ObjectStreamException;
 import java.io.Serializable;
-import java.util.AbstractList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
@@ -103,12 +101,6 @@ class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
     }
 
     @Override
-    public List<K> getKeys()
-    {
-        return new ListKeyView();
-    }
-
-    @Override
     public boolean containsKey(Object key)
     {
         return forward.containsKey(key);
@@ -143,21 +135,6 @@ class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
     public int size()
     {
         return forward.size();
-    }
-
-    private class ListKeyView extends AbstractList<K>
-    {
-        @Override
-        public K get(int index)
-        {
-            return ImmutableSequencerImpl.this.unsequence(index);
-        }
-
-        @Override
-        public int size()
-        {
-            return ImmutableSequencerImpl.this.size();
-        }
     }
 
     private Object writeReplace() throws ObjectStreamException
