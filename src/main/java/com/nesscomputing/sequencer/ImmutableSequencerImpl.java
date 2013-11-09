@@ -22,7 +22,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Iterables;
 
 import gnu.trove.map.TObjectIntMap;
@@ -39,14 +38,7 @@ class ImmutableSequencerImpl<K> extends ImmutableSequencer<K>
     private static final float LOAD_FACTOR = 0.5f;
 
     private final TObjectIntMap<K> forward;
-
     private final K[] reverse;
-
-    public ImmutableSequencerImpl(@JsonProperty("forward") TObjectIntMap<K> forward, @JsonProperty("reverse") K[] reverse)
-    {
-        this.forward = forward;
-        this.reverse = reverse;
-    }
 
     @SuppressWarnings("unchecked")
     ImmutableSequencerImpl()
