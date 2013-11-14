@@ -52,7 +52,11 @@ public abstract class ImmutableSequencer<K> extends AbstractSequencer<K>
     @Override
     public final int sequenceOrAdd(@Nonnull K key)
     {
-        throw new UnsupportedOperationException("Immutable sequencers may not be modified");
+        int result = sequenceIfExists(key);
+        if (result == -1) {
+            throw new UnsupportedOperationException("Immutable sequencers may not be modified: tried to add " + key);
+        }
+        return result;
     }
 
     @Nonnull
