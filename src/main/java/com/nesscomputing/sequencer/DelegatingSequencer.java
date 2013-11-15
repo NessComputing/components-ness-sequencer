@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import gnu.trove.map.TObjectIntMap;
 
 /**
@@ -99,5 +101,12 @@ class DelegatingSequencer<T> implements Sequencer<T>
     public int size()
     {
         return delegate.size();
+    }
+
+    @Override
+    @Nonnull
+    public ImmutableSequencer<T> subSequence(int numElements)
+    {
+        return delegate.subSequence(numElements);
     }
 }

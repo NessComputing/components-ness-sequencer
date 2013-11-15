@@ -31,6 +31,11 @@ public abstract class AbstractSequencerTest<S extends Sequencer<String>>
     protected abstract S createEmpty();
     protected abstract S extend(S from, String... newKeys);
 
+    protected S create(String... keys)
+    {
+        return extend(createEmpty(), keys);
+    }
+
     @Test
     public void testEmptySequencerSize()
     {
@@ -161,5 +166,24 @@ public abstract class AbstractSequencerTest<S extends Sequencer<String>>
         final S seq = extend(createEmpty(), "aaa", "bbb", "ccc", "ddd");
         byte[] bytes = SerializationUtils.serialize(seq);
         assertEquals(seq, SerializationUtils.deserialize(bytes));
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSubsequenceNegativeSize()
+    {
+        create("a", "b").subSequence(-1);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSubsequenceBadSize()
+    {
+        create("a", "b").subSequence(3);
+    }
+
+    @Test
+    public void testSubsequence()
+    {
+        assertEquals(create("a", "b"), create("a", "b", "c").subSequence(2));
+        assertEquals(create(), create("a", "b", "c").subSequence(0));
     }
 }

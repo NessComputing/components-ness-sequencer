@@ -111,4 +111,12 @@ public interface Sequencer<K> extends Serializable
      */
     @Nonnull
     Set<Entry<K, Integer>> entrySet();
+
+    /**
+     * Create an subsequence view containing {@code numElements} elements
+     * starting from {@code 0}.  Because sequencer elements may not be changed after
+     * inserting, the view will be immutable, even for mutable sequencers.
+     */
+    @Nonnull
+    ImmutableSequencer<K> subSequence(int numElements);
 }

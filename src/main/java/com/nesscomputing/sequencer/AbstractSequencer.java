@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
@@ -73,6 +75,13 @@ abstract class AbstractSequencer<K> implements Sequencer<K>
             return keyList;
         }
         return keyList = new SequencerKeyList<>(this);
+    }
+
+    @Override
+    @Nonnull
+    public ImmutableSequencer<K> subSequence(int numElements)
+    {
+        return new SubSequenceView<K>(this, numElements);
     }
 
     @Override
