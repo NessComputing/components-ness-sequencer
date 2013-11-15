@@ -78,6 +78,12 @@ abstract class AbstractSequencer<K> implements Sequencer<K>
     }
 
     @Override
+    public boolean isEmpty()
+    {
+        return size() == 0;
+    }
+
+    @Override
     @Nonnull
     public ImmutableSequencer<K> subSequence(int numElements)
     {

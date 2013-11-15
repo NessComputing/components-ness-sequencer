@@ -100,6 +100,11 @@ public interface Sequencer<K> extends Serializable
     int size();
 
     /**
+     * @return true iff the sequencer is empty.
+     */
+    boolean isEmpty();
+
+    /**
      * @return the list of known keys, in sequence order.
      */
     @JsonValue

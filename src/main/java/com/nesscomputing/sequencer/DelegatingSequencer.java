@@ -104,6 +104,12 @@ class DelegatingSequencer<T> implements Sequencer<T>
     }
 
     @Override
+    public boolean isEmpty()
+    {
+        return delegate.isEmpty();
+    }
+
+    @Override
     @Nonnull
     public ImmutableSequencer<T> subSequence(int numElements)
     {
