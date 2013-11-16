@@ -13,13 +13,13 @@
     <connection>scm:git:git://github.com/NessComputing/components-ness-sequencer.git</connection>
     <developerConnection>scm:git:git@github.com:NessComputing/components-ness-sequencer.git</developerConnection>
     <url>http://github.com/NessComputing/components-ness-sequencer</url>
-    <tag>HEAD</tag>
+    <tag>ness-sequencer-0.0.2</tag>
   </scm>
 
   <groupId>com.nesscomputing.components</groupId>
   <artifactId>ness-sequencer</artifactId>
   <name>ness-sequencer</name>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.2</version>
   <packaging>jar</packaging>
   <description>Ness Sequencers</description>
 
